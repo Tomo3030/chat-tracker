@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script>
+      let chatCount = {};
+      function checkChat() {
+        chatCount = {};
+        let text = document.getElementById("chat").value;
+        let chatArr = text.split(/\r?\n/);
+        let myRe = /].(.*?).:/;
+        chatArr.forEach((line) => {
+          let result = line.match(myRe);
+          if (result) {
+            chatCount[result[1]] = (chatCount[result[1]] || 0) + 1;
+          }
+        });
+        console.log(chatCount);
+        displayObject();
+      }
+
+      function clearText() {
+        chatCount = {};
+        document.getElementById("chatResults").innerHTML = "";
+        document.getElementById("chat").value = "";
+      }
+
+      function displayObject() {
+        for (let [key, value] of Object.entries(chatCount)) {
+          console.log(key, value);
+          this.document.getElementById("chatResults").innerHTML +=
+            "<li>" + key + ": " + value + "</li>";
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <h1>INU Chat Log Counter</h1>
+
+    <textarea name="chat" id="chat" cols="60" rows="30"></textarea>
+    <div>
+      <button onClick="checkChat()">submit</button>
+      <button onClick="clearText()">Clear</button>
+    </div>
+    <ul id="chatResults"></ul>
+  </body>
+</html>
